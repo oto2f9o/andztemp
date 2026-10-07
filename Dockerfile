@@ -17,8 +17,14 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 # Copy toàn bộ mã nguồn vào container
 COPY . /var/www/html
 
-# Phân quyền thư mục lưu trữ
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Tự động tạo các thư mục lưu trữ nếu thiếu và phân quyền ghi cho Laravel
+RUN mkdir -p /var/www/html/storage/framework/cache \
+    /var/www/html/storage/framework/sessions \
+    /var/www/html/storage/framework/views \
+    /var/www/html/storage/logs \
+    /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
 CMD ["apache2-foreground"]
