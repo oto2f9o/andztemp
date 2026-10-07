@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 # Cài đặt công cụ hỗ trợ tự động cấu hình extension PHP
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
